@@ -1,0 +1,23 @@
+{
+  "name": "@beig-rules/security-audit-pro",
+  "version": "1.0.0",
+  "description": "Professional adversarial security audit skill for coding agents — bilingual docs, profiles, independent verification.",
+  "license": "MIT",
+  "author": "Beig (Beig-Rules)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Beig-Rules/security-audit-pro.git"
+  },
+  "homepage": "https://github.com/Beig-Rules/security-audit-pro#readme",
+  "keywords": ["security", "audit", "skill", "agent", "beig-rules"],
+  "files": [
+    "README.md",
+    "LICENSE",
+    "skills/**/*",
+    "examples/**/*"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  }
+}
