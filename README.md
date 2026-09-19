@@ -9,63 +9,89 @@
 
 ### What is this?
 
-Security Audit Pro turns your coding agent into a structured, rigorous security auditor.  
-It finds real trust-boundary violations, validates them adversarially (the finder never confirms its own bug), and produces clear, actionable reports.
+**Security Audit Pro** turns your coding agent into a structured, rigorous security auditor.  
+It finds real trust-boundary violations, validates them adversarially (the finder never confirms its own bug), and produces clear, actionable reports that owners can actually use.
 
 This is a professional upgrade of Cloudflare’s excellent [security-audit-skill](https://github.com/cloudflare/security-audit-skill).  
-We kept the strongest ideas (independent verification, coverage ledger, strict `confirmed` / `needs_validation` / `rejected` verdicts) and made the whole experience clearer, more usable, and better documented.
+We kept the strongest ideas — independent verification, coverage thinking, and strict `confirmed` / `needs_validation` / `rejected` verdicts — and made the whole experience clearer, more usable, better documented, and easier to run to completion.
 
 ### Key Improvements over the original
 
-- Clear **Quick / Standard / Deep** profiles
-- Much better **bilingual documentation** (English + Persian)
-- Simpler step-by-step guide from zero to finished report
+- Clear **Quick / Standard / Deep** profiles with explicit guidance
+- Full **bilingual documentation** (English + Persian)
+- Much simpler step-by-step path from zero to finished report
 - Better executive summaries and actionable findings
-- Graceful degradation when full sandbox is not available
-- Resume-friendly design
-- Cleaner structure and easier onboarding
+- Graceful degradation when a full sandbox is not available
+- Cleaner structure and faster onboarding
+- Explicit anti-patterns so agents stay disciplined
 
-### Quick Start (English)
+### Quick Start
 
-1. Install the skill (example with Skills CLI):
+1. Install the skill:
    ```bash
    npx skills add https://github.com/Beig-Rules/security-audit-pro --skill security-audit-pro
    ```
 
 2. Open your coding agent inside (or pointed at) the repository you want to audit.
 
-3. Say one of these:
+3. Give a clear instruction, for example:
    - `security audit this codebase`
    - `run a quick security audit`
-   - `do a full security review with report`
+   - `do a standard security audit and produce the full report`
+   - `perform a deep security review`
 
-4. The agent will ask for the profile (Quick / Standard / Deep) if not specified, then run the structured workflow and produce the reports.
+4. The agent will confirm the profile if needed, run the structured workflow, and write the report files.
 
-### Profiles
+### Profiles Explained
 
-| Profile   | Best for                    | Depth          | Cost   |
-|-----------|-----------------------------|----------------|--------|
-| **Quick** | Small projects, first look  | Fast coverage  | Low    |
-| **Standard** | Most real projects       | Balanced       | Medium |
-| **Deep**  | High-stakes / large codebases | Maximum rigor | High   |
+| Profile      | Best for                            | What you get                              | Cost   |
+|--------------|-------------------------------------|-------------------------------------------|--------|
+| **Quick**    | Small projects, first look, triage  | Fast focused pass, main risks             | Low    |
+| **Standard** | Most real-world projects            | Balanced coverage + solid verification    | Medium |
+| **Deep**     | High-stakes or large codebases      | Maximum thoroughness and re-verification  | High   |
 
-### Output Files
+### What you receive after a full audit
 
-After a full audit you typically get:
+- `REPORT.md` — Start here. Executive summary + prioritized confirmed findings with concrete recommendations.
+- `FINDINGS-DETAIL.md` — Full technical evidence and source traces.
+- `NEEDS-VALIDATION.md` — Precise list of items that need the owner to check one specific fact.
+- `findings.json` — Machine-readable results.
+- `coverage-ledger.json` — Record of what was examined.
 
-- `REPORT.md` — Executive summary + prioritized findings
-- `FINDINGS-DETAIL.md` — Full technical details
-- `NEEDS-VALIDATION.md` — Items that need owner confirmation
-- `findings.json` — Machine-readable results
-- `coverage-ledger.json` — What was examined
+### Core Principles (kept and clarified)
 
-### Core Principles (kept from original)
+- Only real trust-boundary failures are reported as confirmed.
+- The agent that finds a candidate never confirms it.
+- Severity exists only on confirmed findings (likelihood × impact).
+- Defense-in-depth gaps without a reachable violation are hardening notes.
+- Source-first analysis + bounded local evidence. No guessing of external behavior.
+- Multiple runs improve coverage over time.
 
-- Only report real trust-boundary failures
-- The agent that finds a candidate never confirms it
-- Severity only on confirmed findings (likelihood × impact)
-- Defense-in-depth gaps are hardening notes, not vulnerabilities
-- Multiple runs improve coverage
+### Detailed Usage Guide (English)
+
+**From zero to finished report:**
+
+1. Ensure your coding agent supports tools and sub-agents.
+2. Install the skill with the command above.
+3. Open or point the agent at the target repository.
+4. State clearly what you want (include the profile if you already know it).
+5. Answer any short clarifying questions (scope, output folder, profile).
+6. Let the agent complete the phases.
+7. Open `REPORT.md` first. Use the other files only when you need deeper evidence.
+
+**Recommended first commands:**
+
+```
+run a quick security audit on this repo
+```
+
+```
+do a standard security audit and write the full report
+```
+
+```
+perform a deep security audit, focus on authentication and authorization
+```
 
 ---
 
@@ -74,62 +100,88 @@ After a full audit you typically get:
 ### این پروژه چیست؟
 
 **Security Audit Pro** ایجنت کدنویسی شما را به یک ممیز امنیتی ساختاریافته و سخت‌گیر تبدیل می‌کند.  
-آسیب‌پذیری‌هایی که واقعاً مرز اعتماد (trust boundary) را نقض می‌کنند پیدا می‌کند، آن‌ها را به صورت تخاصمی اعتبارسنجی می‌کند (کسی که باگ را پیدا کرده حق تأیید آن را ندارد) و گزارش‌های واضح و قابل اجرا تولید می‌کند.
+آسیب‌پذیری‌هایی که واقعاً مرز اعتماد را نقض می‌کنند پیدا می‌کند، آن‌ها را به صورت تخاصمی اعتبارسنجی می‌کند (کسی که باگ را پیدا کرده حق تأیید نهایی آن را ندارد) و گزارش‌های واضح و قابل‌اجرا تولید می‌کند که صاحب پروژه واقعاً بتواند از آن‌ها استفاده کند.
 
 این نسخه، ارتقاء حرفه‌ای اسکیل عالی [security-audit-skill](https://github.com/cloudflare/security-audit-skill) از Cloudflare است.  
-قوی‌ترین ایده‌ها (اعتبارسنجی مستقل، coverage ledger، تفکیک دقیق `confirmed` / `needs_validation` / `rejected`) حفظ شده و کل تجربه استفاده ساده‌تر، شفاف‌تر و مستندتر شده است.
+قوی‌ترین ایده‌ها (اعتبارسنجی مستقل، تفکر coverage، و تفکیک دقیق سه وضعیت `confirmed` / `needs_validation` / `rejected`) حفظ شده و کل تجربه استفاده ساده‌تر، شفاف‌تر، مستندتر و قابل‌اتکاتر شده است.
 
 ### مهم‌ترین بهبودها نسبت به نسخه اصلی
 
-- پروفایل‌های واضح **سریع / استاندارد / عمیق**
+- پروفایل‌های واضح **سریع / استاندارد / عمیق** همراه با راهنمای صریح
 - مستندات کامل دو زبانه (فارسی + انگلیسی)
-- راهنمای قدم‌به‌قدم خیلی ساده از صفر تا گزارش نهایی
-- خلاصه مدیریتی بهتر و یافته‌های actionable
-- رفتار منطقی وقتی sandbox کامل در دسترس نیست
-- طراحی مناسب برای ادامه دادن (resume)
-- ساختار تمیزتر و شروع آسان‌تر
+- مسیر خیلی ساده‌تر از صفر تا گزارش نهایی
+- خلاصه مدیریتی بهتر و یافته‌های واقعاً actionable
+- رفتار منطقی و شفاف وقتی sandbox کامل در دسترس نیست
+- ساختار تمیزتر و شروع بسیار آسان‌تر
+- لیست ضدالگوها برای نگه داشتن انضباط ایجنت
 
-### شروع سریع (فارسی)
+### شروع سریع
 
-1. اسکیل را نصب کنید (مثال با Skills CLI):
+1. اسکیل را نصب کنید:
    ```bash
    npx skills add https://github.com/Beig-Rules/security-audit-pro --skill security-audit-pro
    ```
 
-2. ایجنت کدنویسی خود را داخل (یا اشاره به) ریپازیتوری مورد نظر باز کنید.
+2. ایجنت کدنویسی را داخل (یا اشاره به) ریپازیتوری هدف باز کنید.
 
-3. یکی از این دستورات را بگویید:
+3. دستور واضح بدهید، مثلاً:
    - `security audit this codebase`
    - `یک ممیزی امنیتی سریع انجام بده`
-   - `ممیزی کامل امنیتی با گزارش انجام بده`
+   - `ممیزی استاندارد امنیتی انجام بده و گزارش کامل بده`
+   - `ممیزی عمیق امنیتی انجام بده`
 
-4. ایجنت در صورت نیاز پروفایل را می‌پرسد (سریع / استاندارد / عمیق)، سپس فرآیند ساختاریافته را اجرا می‌کند و گزارش‌ها را تولید می‌کند.
+4. ایجنت در صورت نیاز پروفایل را تأیید می‌کند، فرآیند را اجرا می‌کند و فایل‌های گزارش را می‌نویسد.
 
-### پروفایل‌ها
+### توضیح پروفایل‌ها
 
-| پروفایل     | مناسب برای                    | عمق          | هزینه  |
-|-------------|-------------------------------|--------------|--------|
-| **سریع**    | پروژه‌های کوچک، نگاه اول     | پوشش سریع    | کم     |
-| **استاندارد** | اکثر پروژه‌های واقعی         | متعادل       | متوسط  |
-| **عمیق**    | پروژه‌های حساس یا بزرگ       | حداکثر دقت   | بالا   |
+| پروفایل     | مناسب برای                          | چه چیزی دریافت می‌کنید                    | هزینه  |
+|-------------|-------------------------------------|-------------------------------------------|--------|
+| **سریع**    | پروژه‌های کوچک، نگاه اول، تریاژ     | پوشش سریع و ریسک‌های اصلی                 | کم     |
+| **استاندارد** | اکثر پروژه‌های واقعی               | پوشش متعادل + اعتبارسنجی خوب              | متوسط  |
+| **عمیق**    | پروژه‌های حساس یا بزرگ              | حداکثر دقت و بازبینی مستقل                | بالا   |
 
-### فایل‌های خروجی
+### خروجی‌های یک ممیزی کامل
 
-بعد از یک ممیزی کامل معمولاً این فایل‌ها تولید می‌شوند:
+- `REPORT.md` — از اینجا شروع کنید. خلاصه مدیریتی + یافته‌های اولویت‌بندی‌شده همراه با توصیه مشخص.
+- `FINDINGS-DETAIL.md` — جزئیات فنی کامل و شواهد.
+- `NEEDS-VALIDATION.md` — لیست دقیق مواردی که صاحب پروژه باید یک واقعیت مشخص را بررسی کند.
+- `findings.json` — نتایج قابل‌خواندن توسط ماشین.
+- `coverage-ledger.json` — سابقه آنچه بررسی شده است.
 
-- `REPORT.md` — خلاصه مدیریتی + یافته‌های اولویت‌بندی شده
-- `FINDINGS-DETAIL.md` — جزئیات فنی کامل
-- `NEEDS-VALIDATION.md` — مواردی که نیاز به تأیید صاحب پروژه دارند
-- `findings.json` — نتایج قابل خواندن توسط ماشین
-- `coverage-ledger.json` — آنچه بررسی شده است
+### اصول اصلی (حفظ‌شده و شفاف‌شده)
 
-### اصول اصلی (حفظ‌شده از نسخه اصلی)
+- فقط نقض واقعی مرز اعتماد به عنوان confirmed گزارش می‌شود.
+- ایجنتی که کاندیدا را پیدا کرده هرگز خودش آن را تأیید نمی‌کند.
+- شدت فقط برای یافته‌های confirmed محاسبه می‌شود.
+- کمبود لایه‌های دفاعی بدون نقض قابل‌دسترس، فقط یادداشت hardening است.
+- تحلیل منبع‌محور + شواهد محدود محلی. حدس زدن رفتار خارجی ممنوع است.
+- اجرای چندباره پوشش را بهتر می‌کند.
 
-- فقط نقض واقعی مرز اعتماد گزارش می‌شود
-- ایجنتی که کاندیدا را پیدا کرده هرگز خودش آن را تأیید نمی‌کند
-- شدت (severity) فقط برای یافته‌های confirmed محاسبه می‌شود
-- کمبود لایه‌های دفاعی فقط یادداشت hardening است، نه آسیب‌پذیری
-- اجرای چندباره پوشش را بهتر می‌کند
+### راهنمای دقیق استفاده (فارسی)
+
+**از صفر تا گزارش نهایی:**
+
+1. مطمئن شوید ایجنت شما از ابزار و sub-agent پشتیبانی می‌کند.
+2. اسکیل را با دستور بالا نصب کنید.
+3. وارد ریپازیتوری هدف شوید یا آن را به ایجنت نشان دهید.
+4. واضح بگویید چه می‌خواهید (اگر پروفایل را می‌دانید ذکر کنید).
+5. به سؤالات کوتاه احتمالی (محدوده، پوشه خروجی، پروفایل) پاسخ دهید.
+6. اجازه دهید فازها کامل شوند.
+7. اول فایل `REPORT.md` را باز کنید. بقیه فایل‌ها فقط وقتی به شواهد بیشتر نیاز دارید.
+
+**دستورات پیشنهادی اول:**
+
+```
+یک ممیزی امنیتی سریع روی این ریپو انجام بده
+```
+
+```
+ممیزی استاندارد امنیتی انجام بده و گزارش کامل بنویس
+```
+
+```
+ممیزی عمیق امنیتی انجام بده، تمرکز روی احراز هویت و دسترسی‌ها
+```
 
 ---
 
@@ -139,53 +191,37 @@ After a full audit you typically get:
 npx skills add https://github.com/Beig-Rules/security-audit-pro --skill security-audit-pro
 ```
 
-Or clone this repository and point your agent to the `skills/security-audit-pro` directory.
+Alternatively, clone this repository and point your agent to the `skills/security-audit-pro` directory.
 
 ---
 
-## Detailed Usage Guide / راهنمای دقیق استفاده
+## Project Structure / ساختار پروژه
 
-### English – From Zero to Report
-
-1. Make sure your coding agent supports tools and sub-agents.
-2. Install the skill (command above).
-3. Navigate to (or open) the target repository.
-4. Tell the agent clearly what you want:
-   - For a fast first look → “run a quick security audit”
-   - For normal projects → “do a standard security audit and produce the report”
-   - For high-stakes code → “perform a deep security audit”
-5. Answer any clarifying questions (scope, profile, output directory).
-6. Wait for the structured phases to finish.
-7. Read `REPORT.md` first, then dive into the detailed files if needed.
-
-### فارسی – از صفر تا گزارش نهایی
-
-1. مطمئن شوید ایجنت شما از ابزار و sub-agent پشتیبانی می‌کند.
-2. اسکیل را با دستور بالا نصب کنید.
-3. وارد ریپازیتوری هدف شوید (یا آن را به ایجنت نشان دهید).
-4. واضح بگویید چه می‌خواهید:
-   - برای نگاه اول سریع → «یک ممیزی امنیتی سریع انجام بده»
-   - برای پروژه‌های معمولی → «ممیزی استاندارد امنیتی انجام بده و گزارش بده»
-   - برای کدهای حساس → «ممیزی عمیق امنیتی انجام بده»
-5. به سؤالات احتمالی ایجنت (محدوده، پروفایل، پوشه خروجی) پاسخ دهید.
-6. صبر کنید تا فازهای ساختاریافته تمام شود.
-7. اول فایل `REPORT.md` را بخوانید، بعد در صورت نیاز به جزئیات مراجعه کنید.
+```
+security-audit-pro/
+├── README.md                          # This bilingual documentation
+├── LICENSE                            # MIT + attribution
+└── skills/
+    └── security-audit-pro/
+        ├── SKILL.md                   # Main skill definition (profiles, workflow, principles)
+        └── README.md                  # Short note for the skill package
+```
 
 ---
 
 ## Attribution & Copyright / اعتبار و کپی‌رایت
 
-This project is a professional upgrade and re-packaging inspired by the excellent work of Cloudflare:
+This project is a professional upgrade inspired by the excellent work of Cloudflare:
 
 **Original project:** [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill)  
-Original authors and contributors retain full credit for the core methodology, adversarial validation approach, coverage ledger design, and rigorous principles.
+The original authors and contributors retain full credit for the core adversarial methodology, independent verification approach, coverage-ledger concept, and rigorous evidence standards.
 
 **This upgraded version (Security Audit Pro)**  
 Copyright © 2026 Beig (Beig-Rules)  
-Published under the MIT License (same as the original spirit).
+Published under the MIT License.
 
 You are free to use, modify, and distribute this version.  
-When you use or fork it, please keep the attribution to both Cloudflare’s original work and this upgraded edition.
+When you use or fork it, please keep the attribution to both the original Cloudflare work and this upgraded edition.
 
 ---
 
