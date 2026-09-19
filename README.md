@@ -21,6 +21,8 @@ We kept the strongest ideas — independent verification, coverage thinking, and
 - Full **bilingual documentation** (English + Persian)
 - Much simpler step-by-step path from zero to finished report
 - Better executive summaries and actionable findings
+- Practical domain guides (Web/Auth, AI/LLM, Client-Side, Supply Chain, Multi-tenancy, Availability)
+- Validation rules + operational checklist
 - Graceful degradation when a full sandbox is not available
 - Cleaner structure and faster onboarding
 - Explicit anti-patterns so agents stay disciplined
@@ -111,6 +113,8 @@ perform a deep security audit, focus on authentication and authorization
 - مستندات کامل دو زبانه (فارسی + انگلیسی)
 - مسیر خیلی ساده‌تر از صفر تا گزارش نهایی
 - خلاصه مدیریتی بهتر و یافته‌های واقعاً actionable
+- راهنماهای دامنه عملی (وب/احراز هویت، هوش مصنوعی، کلاینت‌ساید، زنجیره تأمین، چندمستأجری، دسترس‌پذیری)
+- قوانین اعتبارسنجی + چک‌لیست عملیاتی
 - رفتار منطقی و شفاف وقتی sandbox کامل در دسترس نیست
 - ساختار تمیزتر و شروع بسیار آسان‌تر
 - لیست ضدالگوها برای نگه داشتن انضباط ایجنت
@@ -199,12 +203,18 @@ Alternatively, clone this repository and point your agent to the `skills/securit
 
 ```
 security-audit-pro/
-├── README.md                          # This bilingual documentation
-├── LICENSE                            # MIT + attribution
+├── README.md                              # Full bilingual documentation
+├── LICENSE                                # MIT + clear attribution
+├── examples/
+│   └── REPORT.example.md                  # Example of a clean final report
 └── skills/
     └── security-audit-pro/
-        ├── SKILL.md                   # Main skill definition (profiles, workflow, principles)
-        └── README.md                  # Short note for the skill package
+        ├── SKILL.md                       # Main skill (profiles, workflow, principles)
+        ├── DOMAINS.md                     # Practical domain guides
+        ├── VALIDATION.md                  # Validation & reporting rules
+        ├── CHECKLIST.md                   # Operational phase checklist
+        ├── GUIDANCE.md                    # Short agent reminders
+        └── README.md                      # Skill package note
 ```
 
 ---
