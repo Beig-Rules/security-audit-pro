@@ -9,6 +9,13 @@ A clearer, more usable, and professionally packaged upgrade of the adversarial s
 
 **Goal:** Find real trust-boundary violations, validate them adversarially, and deliver clear actionable reports.
 
+## Supporting Files (load when needed)
+
+- [DOMAINS.md](DOMAINS.md) — Practical domain guides (Web/Auth, AI/LLM, Client-Side, Supply Chain, Multi-tenancy, Availability)
+- [VALIDATION.md](VALIDATION.md) — Detailed validation and reporting rules
+- [CHECKLIST.md](CHECKLIST.md) — Operational checklist for every phase
+- [GUIDANCE.md](GUIDANCE.md) — Short operational reminders
+
 ## Operating Modes
 
 - **Guidance mode** (default)  
@@ -21,120 +28,72 @@ If the request could be either mode, ask one focused clarifying question before 
 
 ## Profiles
 
-Always prefer to use (or ask for) one of these profiles:
-
 | Profile     | Best for                          | Depth              | Relative Cost |
 |-------------|-----------------------------------|--------------------|---------------|
 | **Quick**   | Small projects, first look, triage| Fast focused pass  | Low           |
 | **Standard**| Most real-world projects          | Balanced coverage  | Medium        |
 | **Deep**    | High-stakes or large codebases    | Maximum rigor      | High          |
 
-Profiles change breadth, number of hunting waves, and verification redundancy.  
-They **never** lower the evidence bar required for a `confirmed` finding.
+Profiles change breadth and verification redundancy. They **never** lower the evidence bar for a `confirmed` finding.
 
 ## Core Principles (Non-negotiable)
 
-1. **Only real boundary failures**  
-   A finding must name the lower-trust principal, the accepted input/action, the intended control, the crossed boundary, the affected principal or resource, and a concrete observable result.
-
-2. **Adversarial validation**  
-   The agent that discovers a candidate never confirms it. A separate, skeptical verifier must actively try to disprove it.
-
-3. **Severity only on confirmed**  
-   Likelihood × impact is calculated only for `confirmed` records. `needs_validation` has no severity.
-
-4. **needs_validation is precise**  
-   It means a specific source-grounded hypothesis is blocked by an exact missing fact (deployment control, runtime behavior, external config, etc.).
-
-5. **Defense-in-depth ≠ vulnerability**  
-   Missing extra layers when a primary control already prevents the attack is a hardening note, not a finding.
-
-6. **Source-first + bounded evidence**  
-   Prefer static analysis + minimal local proof. Do not guess proxy, IdP, browser, or deployment behavior that is not visible in the repository.
-
-7. **Multiple runs improve coverage**  
-   Later runs should build on prior ledgers and focus on gaps.
+1. **Only real boundary failures** — Name lower-trust principal, accepted input/action, intended control, crossed boundary, affected resource, and concrete result.
+2. **Adversarial validation** — The finder never confirms its own candidate. A separate skeptical verifier must try to disprove it.
+3. **Severity only on confirmed** — Likelihood × impact only for `confirmed` records.
+4. **needs_validation is precise** — Exact missing fact required. No severity.
+5. **Defense-in-depth ≠ vulnerability** — Missing extra layers without a reachable violation is hardening only.
+6. **Source-first + bounded evidence** — Do not guess external/proxy/IdP/browser behavior absent from the repository.
+7. **Multiple runs improve coverage** — Later runs build on prior ledgers.
 
 ## Full Audit Workflow (6 Phases)
 
-Execute these phases in order when in Full audit mode:
+1. **Reconnaissance** — Map architecture, trust boundaries, entry points, auth surfaces. Create coverage ledger.
+2. **Coverage-led Hunting** — Use [DOMAINS.md](DOMAINS.md). Record candidates with clear source traces.
+3. **Candidate Validation** — Fresh verifier for every candidate. Follow [VALIDATION.md](VALIDATION.md).
+4. **Structured Output** — Write `findings.json` and update ledger.
+5. **Independent Record Verification** — Re-verify confirmed records with fresh perspective.
+6. **Reporting** — Produce `REPORT.md` (executive + prioritized + actionable), `FINDINGS-DETAIL.md`, `NEEDS-VALIDATION.md`.
 
-### Phase 1 — Reconnaissance
-- Map architecture, trust boundaries, entry points, authentication/authorization surfaces, and data flows.
-- Identify major subsystems and deployment modes present in the repository.
-- Create an initial `coverage-ledger.json` (what will be examined).
-- Record any prior audit artifacts if they exist.
+Use [CHECKLIST.md](CHECKLIST.md) as the operational control panel throughout the run.
 
-### Phase 2 — Coverage-led Hunting
-- Assign focused hunting work according to the ledger and chosen profile.
-- Hunters look for concrete candidates that violate a trust boundary.
-- Record candidates with clear fingerprints and source traces.
-- Use domain-specific knowledge (web, auth, AI/LLM, supply-chain, etc.) when relevant.
-
-### Phase 3 — Candidate Validation
-- Every unique candidate is given to a **fresh** verifier.
-- The verifier’s job is to try to disprove the candidate.
-- Outcomes: promote to `confirmed`, keep as `needs_validation` (with exact blocker), or `rejected`.
-
-### Phase 4 — Structured Output
-- Write all final records into `findings.json`.
-- Validate structure and required fields.
-- Update the coverage ledger.
-
-### Phase 5 — Independent Record Verification
-- Fresh agents re-verify the source claims of every retained `confirmed` and important `needs_validation` record.
-- Material changes trigger another verification pass.
-
-### Phase 6 — Reporting
-Produce clear human-readable reports:
-
-- `REPORT.md` — Start with a short executive summary, then prioritized confirmed findings with actionable recommendations.
-- `FINDINGS-DETAIL.md` — Full technical details and evidence.
-- `NEEDS-VALIDATION.md` — Precise list of items that need owner confirmation, each with the exact missing fact.
-
-Stop only when the reports are written **or** the run is explicitly marked incomplete with a clear reason disclosed in the report.
+Stop only when reports are written or the run is explicitly marked incomplete with a clear reason.
 
 ## Verdict Definitions
 
-- **confirmed**  
-  Complete source trace + bounded observed (or safely demonstrable) result that crosses a trust boundary. Has severity.
-
-- **needs_validation**  
-  Source-grounded hypothesis blocked by one exact missing fact outside pure source analysis. No severity.
-
-- **rejected**  
-  Candidate was disproved by source evidence, visible controls, lack of meaningful impact, or impossible prerequisites.
+- **confirmed** — Complete source trace + meaningful boundary-crossing result. Has severity.
+- **needs_validation** — Solid hypothesis blocked by one exact missing fact. No severity.
+- **rejected** — Disproved by source, visible controls, or lack of real impact.
 
 ## Lightweight / Degraded Mode
 
-When a full OS-enforced sandbox is not available:
-
-- Continue with thorough source-only analysis.
-- Any finding that truly requires execution must be marked `needs_validation` with the exact missing capability.
-- Never claim execution evidence that does not exist.
-- Still produce the full report structure so the owner receives maximum value.
+When full sandbox is unavailable:
+- Continue with thorough source analysis.
+- Mark execution-dependent claims as `needs_validation` with the exact missing capability.
+- Never invent execution evidence.
+- Still deliver maximum value through the report structure.
 
 ## Output Quality Rules
 
-- Executive summary first in `REPORT.md`.
-- Every confirmed finding must be actionable (what to change, roughly where, and why it matters).
-- Keep language precise and avoid checklist-style noise.
+- `REPORT.md` starts with a short executive summary.
+- Confirmed findings are prioritized and actionable.
+- Every `needs_validation` item states the exact missing fact.
 - Prefer fewer high-quality confirmed findings over many weak ones.
 
 ## Anti-Patterns (Never do these)
 
-1. Presenting checklist deviations as vulnerabilities.
-2. Reporting defense-in-depth gaps with no reachable boundary violation.
-3. Guessing external/proxy/IdP/browser behavior not present in source.
-4. Letting the finding agent confirm its own candidate.
-5. Assigning severity to `needs_validation`.
+1. Checklist deviations presented as vulnerabilities.
+2. Defense-in-depth gaps with no reachable boundary violation.
+3. Guessing external behavior not present in source.
+4. Finder confirming its own candidate.
+5. Severity on `needs_validation`.
 6. Writing the final report before independent verification.
-7. Stopping mid-phase without marking the run incomplete and explaining why.
+7. Stopping mid-phase without declaring the run incomplete and explaining why.
 
 ## Attribution
 
-Core adversarial methodology, independent verification principle, coverage-ledger idea, and rigorous evidence standards are inspired by Cloudflare’s security-audit-skill.
+Core adversarial methodology, independent verification principle, and rigorous evidence standards are inspired by Cloudflare’s security-audit-skill.
 
-This Pro edition focuses on clearer profiles, higher usability, bilingual documentation, actionable reporting, and graceful degradation while preserving the strict verification standard.
+This Pro edition focuses on clearer profiles, higher usability, bilingual documentation, practical domain guides, actionable reporting, and graceful degradation while preserving the strict verification standard.
 
 Copyright © 2026 Beig (Beig-Rules)
